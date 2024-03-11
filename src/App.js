@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [state, setState] = useState({
+    test: "success",
+  });
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
+
+  return <div>check</div>;
 }
 
 export default App;
+
+// dictionary & thesaurus//
+
+//** [ WORD SEARCH ] */
+// 1. search a word that returns a definition that also has a few syns and ants; a see more button can be clicked to see all syn or ant if any
+// 2. on this card it has a add to deck button that adds it to study deck
+// 3. also on this card has a favorite button that adds it to study deck and favorites deck
+// 4. card displays part of speech with part of speech connected to its definition
+// 5. card has audio played when button is clicked
+// 6. handle misspell word and words that are modifcations of other words (ex. explicit, explicitly)
+
+//**[ RANDOM WORD ] */
+// 1. same functionality as above, except instead of choosing a word. You click a button that runs a function in which
+//    a random number is created and is used to choose a word from the wordlist array.
+
+//** [ STUDY DECKS ] */
+
+// 1. two decks, SAVED WORDS & FAVORITES & DIFFICULT
+// 2. All 3 decks have options where you can delete word from deck
+// 3. each deck has its on view cards list where you can search for a word, this has buttons where you can also add to other lists or remove from lists by clicking buttons
+// 4. deck have 2 study modes. Shuffle and Order
+// 5. will have clear deck button, with a warning that makes a random code and makes you type it if you are sure; if not code entered wrong, it will let user know
+
+// synonym & antonym trainer
+
+// 1. two modes WORD SEARCH and RANDOM WORD like above
+// 2. a button that specifies whether we want to match syns or ants, if any
+// 3. a card is returned that displays the total number of syns or ants in the top left corner;
+// 4. the user is provided with options of how many syns or ants it wants to try to guess, roughly amounting to 25%, 50%, 75% or 100%;
+// 5. bubbles will pop down representing syns or ants that are covered up... think of family fued. along with an input area to type in
+// 6. upon entry the word will be searched among all of the possible words, if there. the word will be revealed in a random one of the boxes available; (not hard coding)
+// 7. if wrong an X pops up, three X's and you lose. for every sucesssful word you complete you get 6 X's added to your total that can be used on other words
+// 8. after 3 X's are used a pop up comes up and says you lost and if you have X's asks you if you like to use more X's to keep guessing? if not you can cancel and go to another word.
+// 9. whether you win or lose at the end youre are asked if you want to add word to your DOJO where you can later go and perform the same actions without risking X's.
+// this is a way to train words youve already seen (x's) are usually relegated for words you have not previously saved into your DOJO.
+
+// [DOJO]
+// 1. same basic functionality as above, just with no expediture or collection of X's
+// 2. a view words page that allows you to delete word from DOJO or delete all words from DOJO
+
+// Eventually can make this multiplayer where you can basically play family fued but with synonyms and ant against a live player
