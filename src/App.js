@@ -5,6 +5,7 @@ import ChoosePath from "./pages/ChoosePath";
 import DictThes from "./pages/DictThes";
 import Trainer from "./pages/Trainer";
 import Welcome from "./pages/Welcome";
+import Study from "./pages/Study";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/choose" element={<ChoosePath />} />
           <Route path="/dict&thes" element={<DictThes />} />
           <Route path="/trainer" element={<Trainer />} />
+          <Route path="/study" element={<Study />} />
         </Routes>
       </BrowserRouter>
     </>

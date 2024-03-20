@@ -28,7 +28,7 @@
   background-size: cover;
 }
 
-.welcome-title {
+.welcome-title, .dict-title {
   border: 3px solid red;
     font-size: 42px;
     text-align: center;
@@ -36,14 +36,38 @@
 
 .welcome-cards-display {
   border: 4px solid blue;
+  background-color: pink;
+  
+
+
 }
 
 .welcome-cards {
   border: 5px solid green; 
-  min-height: 500px;
+  min-height: 400px;
 }
 
 .welcome-btns {
   border: 5px solid purple;
   text-align: center;
 }
+
+.dict-lookup {
+  border: 4px solid orange;
+}
+
+.dict-def {
+  background-color: cyan;
+  min-height: 80vh;
+}
+
+.dict-search {
+  min-height: 40vh;
+  background-color: beige;
+}
+
+.dict-random {
+  min-height: 40vh;
+  background-color: lime
+}
+
