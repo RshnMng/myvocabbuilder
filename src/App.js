@@ -1,126 +1,22 @@
-import { useState } from "react";
+// import { useState } from "react";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ChoosePath from "./pages/ChoosePath";
+import DictThes from "./pages/DictThes";
+import Trainer from "./pages/Trainer";
+import Welcome from "./pages/Welcome";
 
 export default function App() {
-  const [state, setState] = useState({
-    dictionary: require("an-array-of-english-words"),
-    wordData: [],
-    searchedWord: "",
-    foundWord: "",
-    definitions: {},
-    associatedWords: [],
-    synonyms: [],
-    antonyms: [],
-    studyDeck: [],
-    favDeck: [],
-    struggleDeck: [],
-    dojoDeck: [],
-    didYouMean: [],
-  });
-
-  const synKey = "869e3ff5-9f46-476e-a34d-a95296027c77";
-  const dictKey = "ee6112c8-f611-45ab-950f-4b9d12426957";
-
-  function updateInput(event) {
-    setState((prevState) => {
-      return { ...prevState, searchedWord: event.target.value };
-    });
-  }
-
-  function handleSearch(word) {
-    resetState();
-    fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${dictKey}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setState((prevState) => {
-          return { ...prevState, definitions: { ...prevState.definitions, [data[0].fl]: data[0].shortdef } };
-        });
-      });
-    fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${synKey}`)
-      .then((response) => response.json())
-      .then((data) => {
-        typeof data[0] === "string"
-          ? setState((prevState) => {
-              return { ...prevState, didYouMean: data };
-            })
-          : data.forEach((entry) => {
-              let syns = [];
-              let ants = [];
-              entry.meta.syns.forEach((array) => syns.push(...array));
-              entry.def[0].sseq.forEach((array) => {
-                array[0][1].ant_list &&
-                  array[0][1].ant_list.forEach((array) => {
-                    array.forEach((item) => ants.push(item.wd));
-                  });
-
-                array[0][1].near_list &&
-                  array[0][1].near_list.forEach((array) => {
-                    array.forEach((item) => ants.push(item.wd));
-                  });
-                array[0][1].rel_list &&
-                  array[0][1].rel_list.forEach((array) => {
-                    array.forEach((item) => syns.push(item.wd));
-                  });
-              });
-              setState((prevState) => {
-                return {
-                  ...prevState,
-                  foundWord: data[0].hwi.hw,
-                  wordData: data,
-                  definitions: { ...prevState.definitions, [entry.fl]: entry.shortdef },
-                  associatedWords: [...prevState.associatedWords, ...entry.meta.stems],
-                  synonyms: [...prevState.synonyms, ...syns],
-                  antonyms: [...prevState.antonyms, ...ants],
-                };
-              });
-            });
-        console.log(state);
-      });
-  }
-
-  function resetState() {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        foundWord: "",
-        definitions: {},
-        associatedWords: [],
-        synonyms: [],
-        antonyms: [],
-        wordData: [],
-        didYouMean: [],
-      };
-    });
-  }
-
-  function handleRandom() {
-    let randomNum = Math.floor(Math.random() * 274937);
-    let randomWord = state.dictionary[randomNum];
-    setState((prevState) => {
-      return { ...prevState, searchedWord: randomWord };
-    });
-    handleSearch(randomWord);
-  }
-
-  // i need to find a way to handle when the random word button calls up a word that doesnt have a definition,
-  // my original thought was to recall the function based on if the state.definition was undefined, but that keeps
-  // causing a loop, so we have to find another solution
-
   return (
     <>
-      <input className="search-bar" onChange={(event) => updateInput(event)}></input>
-      <button className="search-btn" onClick={() => handleSearch(state.searchedWord)}>
-        search
-      </button>
-      <button
-        className="random-btn"
-        onClick={() => {
-          resetState();
-          handleRandom();
-        }}
-      >
-        random
-      </button>
-      <textarea></textarea>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Welcome />}></Route>
+          <Route path="/choose" element={<ChoosePath />} />
+          <Route path="/dict&thes" element={<DictThes />} />
+          <Route path="/trainer" element={<Trainer />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

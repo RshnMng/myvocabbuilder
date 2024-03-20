@@ -1,38 +1,49 @@
-.App {
+.choosePath{
+  border: 3px solid red;
+  font-size: 42px;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.choosePath-split{ 
+  border: 5px solid blue;
+  min-height: 500px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.choosePath-card {
+  border: 3px solid yellow;
+}
+
+.dictionary-img {
+  height: 300px;
+  background-position: center;
+  background-size: cover;
+  background-image: url("https://www.nche.com/wp-content/uploads/2022/05/emmanuel-ikwuegbu-5RYvGECKz44-unsplash-1-scaled-e1652750778369.jpg")
+}
+
+.trainer-img {
+  background-image: url('/Users/rashaanmungo/Desktop/myvocabbuilder/src/images/samuel-castro-MS_RP-Lba0U-unsplash.jpg');
+  height: 300px;
+  background-position: center;
+  background-size: cover;
+}
+
+.welcome-title {
+  border: 3px solid red;
+    font-size: 42px;
+    text-align: center;
+}
+
+.welcome-cards-display {
+  border: 4px solid blue;
+}
+
+.welcome-cards {
+  border: 5px solid green; 
+  min-height: 500px;
+}
+
+.welcome-btns {
+  border: 5px solid purple;
+  text-align: center;
 }
