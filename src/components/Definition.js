@@ -1,5 +1,6 @@
 import { Context } from "../App";
 import { useContext } from "react";
+import WordSections from "./WordSections";
 
 export default function Definition() {
   let state = useContext(Context);
@@ -24,38 +25,24 @@ export default function Definition() {
             );
           })}
         </div>
-        <div>
-          {associatedWords.map((word) => {
-            return (
-              <div>
-                <div>{word}</div>
-              </div>
-            );
-          })}
+        <WordSections title="Associated Words" array={associatedWords} limit={6} index={0} />
+
+        <div className="def-synonyms">
+          <WordSections title="Synonyms" array={synonyms} limit={6} index={0} />
         </div>
-        <div>
-          {synonyms.map((word) => {
-            return (
-              <div>
-                <div>{word}</div>
-              </div>
-            );
-          })}
-        </div>
-        <div>
-          {antonyms.map((word) => {
-            return (
-              <div>
-                <div>{word}</div>
-              </div>
-            );
-          })}
+
+        <div className="def-antonyms">
+          <WordSections title="Antonyms" array={antonyms} limit={6} index={0} />
         </div>
       </div>
     </>
   );
 }
 
-// 1. give labels to each section so we know which words are what
-// 2. limit the amount of ants and syns so it only shows the first 5
-// 3. implement a button to be clicked to show 5 more, show in invrements of 5
+// add a button div, one to add to a study deck, and one to a favorites deck
+// create working deck pages and create an array that takes this deck information and stores it into local storage
+// create functionality to study and go through deck
+// create shuffle functionality by using random number vs deck length
+// create remove from deck and struggle deck access as well
+// add home btn or some button to navigate out of this page
+// also create place holder display for the period before someone searches thier first word

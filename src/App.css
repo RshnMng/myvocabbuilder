@@ -74,3 +74,13 @@
 .dict-def-display {
   color: red;
 }
+
+.label {
+  font-size: 18px;
+  color: orangered;
+}
+
+.hidden {
+  display: none;
+}
+

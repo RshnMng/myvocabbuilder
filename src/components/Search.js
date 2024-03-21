@@ -8,7 +8,6 @@ export default function Search() {
   let searchedWord = state.searchedWord;
   let resetState = state.resetState;
 
-  console.log(state);
   return (
     <>
       <input className="dict-input" onChange={updateInput}></input>
@@ -18,6 +17,3 @@ export default function Search() {
     </>
   );
 }
-
-//1. make it so when you enter a word in the search input and hit the search button - all the
-// information we want displayed shows up on the display side.

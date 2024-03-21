@@ -57,6 +57,7 @@ export default function App() {
       fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${synKey}`)
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           typeof data[0] === "string"
             ? setState((prevState) => {
                 return { ...prevState, didYouMean: data };
