@@ -1,8 +1,12 @@
 import Search from "../components/Search";
 import Random from "../components/Random";
 import Definition from "../components/Definition";
+import { Context } from "../App";
+import React, { useContext } from "react";
 
 export default function DictThes() {
+  let state = useContext(Context);
+  console.log(state);
   return (
     <>
       <div className="container-fliud">

@@ -1,23 +1,113 @@
-// import { useState } from "react";
-import "./App.css";
+import { useState, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ChoosePath from "./pages/ChoosePath";
 import DictThes from "./pages/DictThes";
 import Trainer from "./pages/Trainer";
 import Welcome from "./pages/Welcome";
 import Study from "./pages/Study";
+import "./App.css";
+
+export const Context = createContext();
 
 export default function App() {
+  const synKey = process.env.REACT_APP_SYN_KEY;
+  const dictKey = process.env.REACT_APP_DICT_KEY;
+  const [state, setState] = useState({
+    dictionary: require("an-array-of-english-words"),
+    wordData: [],
+    searchedWord: "",
+    foundWord: "",
+    definitions: {},
+    associatedWords: [],
+    synonyms: [],
+    antonyms: [],
+    studyDeck: [],
+    favDeck: [],
+    struggleDeck: [],
+    dojoDeck: [],
+    didYouMean: [],
+    updateInput: (event) => {
+      setState((prevState) => {
+        return { ...prevState, searchedWord: event.target.value };
+      });
+    },
+    resetState: () => {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          foundWord: "",
+          definitions: {},
+          associatedWords: [],
+          synonyms: [],
+          antonyms: [],
+          wordData: [],
+          didYouMean: [],
+        };
+      });
+    },
+    handleSearch: (word, resetFunc) => {
+      resetFunc();
+      fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${dictKey}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setState((prevState) => {
+            return { ...prevState, definitions: { ...prevState.definitions, [data[0].fl]: data[0].shortdef } };
+          });
+        });
+      fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${synKey}`)
+        .then((response) => response.json())
+        .then((data) => {
+          typeof data[0] === "string"
+            ? setState((prevState) => {
+                return { ...prevState, didYouMean: data };
+              })
+            : data.forEach((entry) => {
+                let syns = [];
+                let ants = [];
+                entry.meta.syns.forEach((array) => syns.push(...array));
+                entry.def[0].sseq.forEach((array) => {
+                  array[0][1].ant_list &&
+                    array[0][1].ant_list.forEach((array) => {
+                      array.forEach((item) => ants.push(item.wd));
+                    });
+
+                  array[0][1].near_list &&
+                    array[0][1].near_list.forEach((array) => {
+                      array.forEach((item) => ants.push(item.wd));
+                    });
+                  array[0][1].rel_list &&
+                    array[0][1].rel_list.forEach((array) => {
+                      array.forEach((item) => syns.push(item.wd));
+                    });
+                });
+                setState((prevState) => {
+                  return {
+                    ...prevState,
+                    foundWord: data[0].hwi.hw,
+                    wordData: data,
+                    definitions: { ...prevState.definitions, [entry.fl]: entry.shortdef },
+                    associatedWords: [...prevState.associatedWords, ...entry.meta.stems],
+                    synonyms: [...prevState.synonyms, ...syns],
+                    antonyms: [...prevState.antonyms, ...ants],
+                  };
+                });
+              });
+        });
+    },
+  });
+
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Welcome />}></Route>
-          <Route path="/choose" element={<ChoosePath />} />
-          <Route path="/dict&thes" element={<DictThes />} />
-          <Route path="/trainer" element={<Trainer />} />
-          <Route path="/study" element={<Study />} />
-        </Routes>
+        <Context.Provider value={state}>
+          <Routes>
+            <Route path="/" element={<Welcome />}></Route>
+            <Route path="/choose" element={<ChoosePath />} />
+            <Route path="/dict&thes" element={<DictThes />} />
+            <Route path="/trainer" element={<Trainer />} />
+            <Route path="/study" element={<Study />} />
+          </Routes>
+        </Context.Provider>
       </BrowserRouter>
     </>
   );
