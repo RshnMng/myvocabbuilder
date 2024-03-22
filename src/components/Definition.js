@@ -10,6 +10,9 @@ export default function Definition() {
   let associatedWords = state.associatedWords;
   let synonyms = state.synonyms;
   let antonyms = state.antonyms;
+  let saveToDeck = state.saveToDeck;
+  let studyDeck = state.studyDeck;
+  let favDeck = state.favDeck;
 
   return (
     <>
@@ -34,15 +37,26 @@ export default function Definition() {
         <div className="def-antonyms">
           <WordSections title="Antonyms" array={antonyms} limit={6} index={0} />
         </div>
+        <div className="study-btn-div d-flex">
+          <button className="study-btn" onClick={() => saveToDeck(state, "studyDeck")}>
+            study
+          </button>
+          <button className="fav-btn" onClick={() => saveToDeck(state, "favDeck")}>
+            fav
+          </button>
+        </div>
       </div>
     </>
   );
 }
 
-// add a button div, one to add to a study deck, and one to a favorites deck
-// create working deck pages and create an array that takes this deck information and stores it into local storage
+// local storage reset on everypage refresh, go to app page where local storage is being set and find a way to maintain local
+// storage withougt it being reset between page refresh so we can maintain usage during diffeent sessions
+// create working deck pages
 // create functionality to study and go through deck
 // create shuffle functionality by using random number vs deck length
 // create remove from deck and struggle deck access as well
 // add home btn or some button to navigate out of this page
 // also create place holder display for the period before someone searches thier first word
+// make it so all synonyms and antonym can be clicked on and when clicked on it fires the handle search function searching the clicked word
+// make it so when you do search a new word that the limit for both the anytonym and synonyms are set back to 6

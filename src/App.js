@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ChoosePath from "./pages/ChoosePath";
 import DictThes from "./pages/DictThes";
@@ -26,6 +26,9 @@ export default function App() {
     struggleDeck: [],
     dojoDeck: [],
     didYouMean: [],
+    studyDeck: [],
+    favDeck: [],
+    struggleDeck: [],
     updateInput: (event) => {
       setState((prevState) => {
         return { ...prevState, searchedWord: event.target.value };
@@ -57,7 +60,6 @@ export default function App() {
       fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${synKey}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           typeof data[0] === "string"
             ? setState((prevState) => {
                 return { ...prevState, didYouMean: data };
@@ -95,7 +97,30 @@ export default function App() {
               });
         });
     },
+    saveToDeck: (currentState, name) => {
+      let card = {
+        word: currentState.searchedWord,
+        def: currentState.definitions,
+        associatedWords: currentState.associatedWords,
+        syns: currentState.synonyms,
+        ants: currentState.antonyms,
+      };
+
+      let deckJSON = localStorage.getItem(name);
+      let deck = JSON.parse(deckJSON);
+      deck.push(card);
+
+      let arrayJSON = JSON.stringify(deck);
+      localStorage.setItem(name, arrayJSON);
+    },
   });
+
+  useEffect(() => {
+    let deckJSON = JSON.stringify(state.studyDeck);
+    localStorage.setItem("studyDeck", deckJSON);
+    localStorage.setItem("favDeck", deckJSON);
+    localStorage.setItem("struggleDeck", deckJSON);
+  }, []);
 
   return (
     <>
