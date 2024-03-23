@@ -1,15 +1,14 @@
-import { useState, useContext } from "react";
-import { Context } from "../App";
+import { useState, useEffect } from "react";
 
 export default function StudyDeck() {
   let cardsJSON = localStorage.getItem("studyDeck");
-  let app = useContext(Context);
-  let saveToDeck = app.saveToDeck;
   let studyCards = JSON.parse(cardsJSON);
   let [state, setState] = useState({
     deckCards: studyCards,
     currentIndex: 0,
     front: true,
+    infavsDeck: "",
+    inStruggleDeck: "",
   });
 
   function flipCard() {
@@ -34,12 +33,39 @@ export default function StudyDeck() {
     });
   }
 
-  console.log(state);
-  console.log(app);
+  function addToDifferentDeck(cardInfo, name) {
+    let card = {
+      word: cardInfo.word,
+      def: cardInfo.def,
+      associatedWords: cardInfo.associatedWords,
+      syns: cardInfo.syns,
+      ants: cardInfo.ants,
+    };
 
-  // add to struggle deck
+    let deckJSON = localStorage.getItem(name);
+    let deck;
+    deckJSON == null ? (deck = []) : (deck = JSON.parse(deckJSON));
+    deck.push(card);
+
+    let arrayJSON = JSON.stringify(deck);
+    localStorage.setItem(name, arrayJSON);
+  }
+
+  // switch buttons to remove if already in deck
   // delete card
   // shuffle deck
+
+  function checkIfInDeck(name, word) {
+    let indeck = [];
+    let deck;
+    let deckJSON = localStorage.getItem(name);
+    deckJSON == null ? (deck = []) : (deck = JSON.parse(deckJSON));
+    deck.forEach((wordInfo) => {
+      return wordInfo.word === word && indeck.push(true);
+    });
+    let result = indeck.includes(true);
+    return result;
+  }
 
   return (
     <>
@@ -54,10 +80,40 @@ export default function StudyDeck() {
           <div>{state.deckCards[state.currentIndex].def.adjective}</div>
           <button onClick={() => prevCard()}>Previous Card</button>
           <button onClick={() => nextCard()}>Next Card</button>
-          {/* <button onClick={() => saveToDeck(state.deckCards[state.currentIndex], "favDeck")}>Add To Favorites</button> */}
-          {/* <button onClick={() => saveToDeck(state.deckCards[state.currentIndex], "struggleDeck")}>Add To Struggle</button> */}
+          {checkIfInDeck("favDeck", state.deckCards[state.currentIndex].word) ? (
+            <button>Remove From Favorites</button>
+          ) : (
+            <button
+              onClick={() => {
+                addToDifferentDeck(state.deckCards[state.currentIndex], "favDeck");
+                let indeck = checkIfInDeck("favDeck", state.deckCards[state.currentIndex].word);
+                setState((prevState) => {
+                  return { ...prevState, infavsDeck: indeck };
+                });
+              }}
+            >
+              Add To Favorites
+            </button>
+          )}
+          {checkIfInDeck("struggleDeck", state.deckCards[state.currentIndex].word) ? (
+            <button>Remove From Struggle Deck</button>
+          ) : (
+            <button
+              onClick={() => {
+                addToDifferentDeck(state.deckCards[state.currentIndex], "struggleDeck");
+                let indeck = checkIfInDeck("favDeck", state.deckCards[state.currentIndex].word);
+                setState((prevState) => {
+                  return { ...prevState, infavsDeck: indeck };
+                });
+              }}
+            >
+              Add To Struggle
+            </button>
+          )}
         </div>
       )}
     </>
   );
 }
+
+// add remove from deck functionality along with setting state so page rerenders
