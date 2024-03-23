@@ -5,6 +5,9 @@ import DictThes from "./pages/DictThes";
 import Trainer from "./pages/Trainer";
 import Welcome from "./pages/Welcome";
 import Study from "./pages/Study";
+import StudyDeck from "./pages/StudyDeck";
+import StruggleDeck from "./pages/StruggleDeck";
+import FavoriteDeck from "./pages/FavoritesDeck";
 import "./App.css";
 
 export const Context = createContext();
@@ -107,20 +110,14 @@ export default function App() {
       };
 
       let deckJSON = localStorage.getItem(name);
-      let deck = JSON.parse(deckJSON);
+      let deck;
+      deckJSON == null ? (deck = []) : (deck = JSON.parse(deckJSON));
       deck.push(card);
 
       let arrayJSON = JSON.stringify(deck);
       localStorage.setItem(name, arrayJSON);
     },
   });
-
-  useEffect(() => {
-    let deckJSON = JSON.stringify(state.studyDeck);
-    localStorage.setItem("studyDeck", deckJSON);
-    localStorage.setItem("favDeck", deckJSON);
-    localStorage.setItem("struggleDeck", deckJSON);
-  }, []);
 
   return (
     <>
@@ -132,6 +129,9 @@ export default function App() {
             <Route path="/dict&thes" element={<DictThes />} />
             <Route path="/trainer" element={<Trainer />} />
             <Route path="/study" element={<Study />} />
+            <Route path="/studydeck" element={<StudyDeck />} />
+            <Route path="/struggledeck" element={<StruggleDeck />} />
+            <Route path="/favorites" element={<FavoriteDeck />} />
           </Routes>
         </Context.Provider>
       </BrowserRouter>

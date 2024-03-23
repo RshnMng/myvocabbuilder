@@ -1,5 +1,6 @@
 import { Context } from "../App";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import WordSections from "./WordSections";
 
 export default function Definition() {
@@ -11,8 +12,6 @@ export default function Definition() {
   let synonyms = state.synonyms;
   let antonyms = state.antonyms;
   let saveToDeck = state.saveToDeck;
-  let studyDeck = state.studyDeck;
-  let favDeck = state.favDeck;
 
   return (
     <>
@@ -39,20 +38,20 @@ export default function Definition() {
         </div>
         <div className="study-btn-div d-flex">
           <button className="study-btn" onClick={() => saveToDeck(state, "studyDeck")}>
-            study
+            add to study
           </button>
           <button className="fav-btn" onClick={() => saveToDeck(state, "favDeck")}>
-            fav
+            add to favorites
           </button>
+          <Link to="/trainer">
+            <button className="def-home-btn">Go To Trainer</button>
+          </Link>
         </div>
       </div>
     </>
   );
 }
 
-// local storage reset on everypage refresh, go to app page where local storage is being set and find a way to maintain local
-// storage withougt it being reset between page refresh so we can maintain usage during diffeent sessions
-// create working deck pages
 // create functionality to study and go through deck
 // create shuffle functionality by using random number vs deck length
 // create remove from deck and struggle deck access as well
