@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ChoosePath from "./pages/ChoosePath";
 import DictThes from "./pages/DictThes";

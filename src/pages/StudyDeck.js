@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function StudyDeck() {
   let cardsJSON = localStorage.getItem("studyDeck");
   let studyCards = JSON.parse(cardsJSON);
   let [state, setState] = useState({
-    deckCards: studyCards,
+    studyDeck: studyCards,
     currentIndex: 0,
     front: true,
     infavsDeck: "",
     inStruggleDeck: "",
+    favDeck: [],
+    struggleDeck: [],
+    shuffle: false,
+    currentCard: 1,
   });
 
   function flipCard() {
@@ -20,15 +24,15 @@ export default function StudyDeck() {
   function nextCard() {
     setState((prevState) => {
       let index = state.currentIndex + 1;
-      index >= state.deckCards.length ? (index = 0) : (index = index);
-      return { ...prevState, currentIndex: index, front: true };
+      index >= state.studyDeck.length ? (index = 0) : (index = index);
+      return { ...prevState, currentIndex: index, front: true, currentCard: prevState.currentCard + 1 };
     });
   }
 
   function prevCard() {
     setState((prevState) => {
       let index = state.currentIndex - 1;
-      index <= 0 ? (index = state.deckCards.length - 1) : (index = index);
+      index <= 0 ? (index = state.studyDeck.length - 1) : (index = index);
       return { ...prevState, currentIndex: index, front: true };
     });
   }
@@ -51,9 +55,19 @@ export default function StudyDeck() {
     localStorage.setItem(name, arrayJSON);
   }
 
-  // switch buttons to remove if already in deck
-  // delete card
-  // shuffle deck
+  function removeCard(name) {
+    let deckJSON = localStorage.getItem(name);
+    let deck = JSON.parse(deckJSON);
+    let newDeck = deck.filter((wordInfo) => {
+      return wordInfo.word !== state.studyDeck[state.currentIndex].word;
+    });
+    setState((prevState) => {
+      return { ...prevState, [name]: newDeck, front: true };
+    });
+
+    let newDeckJSON = JSON.stringify(newDeck);
+    localStorage.setItem(name, newDeckJSON);
+  }
 
   function checkIfInDeck(name, word) {
     let indeck = [];
@@ -66,27 +80,69 @@ export default function StudyDeck() {
     let result = indeck.includes(true);
     return result;
   }
+  function shuffleOn() {
+    let randomNum = Math.floor(Math.random() * state.studyDeck.length);
+    setState((prevState) => {
+      return { ...prevState, currentIndex: randomNum, shuffle: true, front: true };
+    });
+  }
+
+  function shuffleOff() {
+    setState((prevState) => {
+      return { ...prevState, shuffle: false, front: true };
+    });
+  }
 
   return (
     <>
-      {state.front ? (
+      {studyCards === null || studyCards.length === 0 ? (
+        <div>deck is empty</div>
+      ) : state.front ? (
         <div className="col-5 card-display m-auto">
-          <div>{state.deckCards[state.currentIndex].word}</div>
+          <div>
+            card {state.currentCard}/{state.studyDeck.length}
+          </div>
+          <div>{state.studyDeck[state.currentIndex].word}</div>
+          {state.shuffle ? <button onClick={() => shuffleOff()}>shuffle off</button> : <button onClick={() => shuffleOn()}>shuffle on</button>}
           <button onClick={() => flipCard()}>show answer</button>
         </div>
       ) : (
         <div className="col-5 card-display m-auto">
-          <div>{state.deckCards[state.currentIndex].word}</div>
-          <div>{state.deckCards[state.currentIndex].def.adjective}</div>
+          <div>
+            card {state.currentCard}/{state.studyDeck.length}
+          </div>
+          <div>{state.studyDeck[state.currentIndex].word}</div>
+          {Object.keys(state.studyDeck[state.currentIndex].def).map((partOfSpeech) => {
+            return (
+              <>
+                <div>{partOfSpeech}</div>
+                <div>{state.studyDeck[state.currentIndex].def[partOfSpeech]}</div>
+              </>
+            );
+          })}
           <button onClick={() => prevCard()}>Previous Card</button>
-          <button onClick={() => nextCard()}>Next Card</button>
-          {checkIfInDeck("favDeck", state.deckCards[state.currentIndex].word) ? (
-            <button>Remove From Favorites</button>
+          {state.shuffle ? <button onClick={() => shuffleOn()}>Next Card</button> : <button onClick={() => nextCard()}>Next Card</button>}
+          {state.shuffle ? <button onClick={() => shuffleOff()}>Shuffle Off</button> : <button onClick={() => shuffleOn()}>Shuffle</button>}
+          <button
+            onClick={() => {
+              removeCard("studyDeck");
+            }}
+          >
+            Remove From Study Deck
+          </button>
+          {checkIfInDeck("favDeck", state.studyDeck[state.currentIndex].word) ? (
+            <button
+              onClick={() => {
+                removeCard("favDeck");
+              }}
+            >
+              Remove From Favorites
+            </button>
           ) : (
             <button
               onClick={() => {
-                addToDifferentDeck(state.deckCards[state.currentIndex], "favDeck");
-                let indeck = checkIfInDeck("favDeck", state.deckCards[state.currentIndex].word);
+                addToDifferentDeck(state.studyDeck[state.currentIndex], "favDeck");
+                let indeck = checkIfInDeck("favDeck", state.studyDeck[state.currentIndex].word);
                 setState((prevState) => {
                   return { ...prevState, infavsDeck: indeck };
                 });
@@ -95,13 +151,19 @@ export default function StudyDeck() {
               Add To Favorites
             </button>
           )}
-          {checkIfInDeck("struggleDeck", state.deckCards[state.currentIndex].word) ? (
-            <button>Remove From Struggle Deck</button>
+          {checkIfInDeck("struggleDeck", state.studyDeck[state.currentIndex].word) ? (
+            <button
+              onClick={() => {
+                removeCard("struggleDeck");
+              }}
+            >
+              Remove From Struggle Deck
+            </button>
           ) : (
             <button
               onClick={() => {
-                addToDifferentDeck(state.deckCards[state.currentIndex], "struggleDeck");
-                let indeck = checkIfInDeck("favDeck", state.deckCards[state.currentIndex].word);
+                addToDifferentDeck(state.studyDeck[state.currentIndex], "struggleDeck");
+                let indeck = checkIfInDeck("favDeck", state.studyDeck[state.currentIndex].word);
                 setState((prevState) => {
                   return { ...prevState, infavsDeck: indeck };
                 });
@@ -116,4 +178,8 @@ export default function StudyDeck() {
   );
 }
 
-// add remove from deck functionality along with setting state so page rerenders
+// make it so that a card can be clicked correct or
+// incorrect and when does removes card from list for the session not remove from the deck, update card count
+// make completed prompt for when the end of the deck is reached
+// make previous button make the card counter go backwards
+// make component reusable for all decks

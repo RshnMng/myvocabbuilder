@@ -27,7 +27,15 @@ export default function WordSections(props) {
       <div className="d-flex justify-content-around flex-wrap">
         {array.map((word) => {
           index = index + 1;
-          return index < limit ? <div className="col-2">{word}</div> : <div className="col-2 ml-1 mr-1 hidden">{word}</div>;
+          return index < limit ? (
+            <div className="col-2" key={index}>
+              {word}
+            </div>
+          ) : (
+            <div className="col-2 ml-1 mr-1 hidden" key={index}>
+              {word}
+            </div>
+          );
         })}
       </div>
       {limit < array.length ? (
