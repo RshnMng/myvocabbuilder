@@ -53,8 +53,6 @@ export default function Definition() {
 }
 
 // create functionality to study and go through deck
-// create shuffle functionality by using random number vs deck length
-// create remove from deck and struggle deck access as well
 // add home btn or some button to navigate out of this page
 // also create place holder display for the period before someone searches thier first word
 // make it so all synonyms and antonym can be clicked on and when clicked on it fires the handle search function searching the clicked word

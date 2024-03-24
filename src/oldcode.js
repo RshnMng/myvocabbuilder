@@ -7,7 +7,7 @@
 //   associatedWords: [],
 //   synonyms: [],
 //   antonyms: [],
-//   studyDeck: [],
+//   : [],
 //   favDeck: [],
 //   struggleDeck: [],
 //   dojoDeck: [],

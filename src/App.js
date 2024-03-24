@@ -24,12 +24,8 @@ export default function App() {
     associatedWords: [],
     synonyms: [],
     antonyms: [],
-    studyDeck: [],
-    favDeck: [],
-    struggleDeck: [],
     dojoDeck: [],
     didYouMean: [],
-    studyDeck: [],
     favDeck: [],
     struggleDeck: [],
     updateInput: (event) => {
@@ -107,6 +103,7 @@ export default function App() {
         associatedWords: currentState.associatedWords,
         syns: currentState.synonyms,
         ants: currentState.antonyms,
+        correct: [],
       };
 
       let deckJSON = localStorage.getItem(name);
@@ -129,9 +126,9 @@ export default function App() {
             <Route path="/dict&thes" element={<DictThes />} />
             <Route path="/trainer" element={<Trainer />} />
             <Route path="/study" element={<Study />} />
-            <Route path="/studydeck" element={<StudyDeck />} />
-            <Route path="/struggledeck" element={<StruggleDeck />} />
-            <Route path="/favorites" element={<FavoriteDeck />} />
+            <Route path="/studydeck" element={<StudyDeck name={"studyDeck"} />} />
+            <Route path="/struggledeck" element={<StudyDeck name={"struggleDeck"} />} />
+            <Route path="/favorites" element={<StudyDeck name={"favDeck"} />} />
           </Routes>
         </Context.Provider>
       </BrowserRouter>
