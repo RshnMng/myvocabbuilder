@@ -69,7 +69,7 @@ export default function (props) {
       return wordInfo.word !== state.thisDeck[state.currentIndex].word;
     });
     setState((prevState) => {
-      return { ...prevState, [name]: newDeck };
+      return { ...prevState, [name]: newDeck, thisDeck: newDeck, front: true };
     });
 
     let newDeckJSON = JSON.stringify(newDeck);
@@ -104,12 +104,12 @@ export default function (props) {
 
   return (
     <>
-      {studyCards === null || studyCards.length === 0 ? (
+      {state.thisDeck === null || state.thisDeck.length === 0 ? (
         <div>deck is empty</div>
       ) : state.front ? (
         <div className="col-5 card-display m-auto">
           <div>
-            card {state.currentCard}/{state.studyDeck.length}
+            card {state.currentCard}/{state.thisDeck.length}
           </div>
           <div>{state.thisDeck[state.currentIndex].word}</div>
           {state.shuffle ? <button onClick={() => shuffleOff()}>shuffle off</button> : <button onClick={() => shuffleOn()}>shuffle on</button>}
@@ -118,7 +118,7 @@ export default function (props) {
       ) : (
         <div className="col-5 card-display m-auto">
           <div>
-            card {state.currentCard}/{state.studyDeck.length}
+            card {state.currentCard}/{state.thisDeck.length}
           </div>
           <div>{state.thisDeck[state.currentIndex].word}</div>
           {Object.keys(state.thisDeck[state.currentIndex].def).map((partOfSpeech) => {
@@ -133,13 +133,15 @@ export default function (props) {
           {state.shuffle ? <button onClick={() => shuffleOn()}>Incorrect</button> : <button onClick={(event) => correct(event)}>Incorrect</button>}
           {state.shuffle ? <button onClick={() => shuffleOn()}>Correct</button> : <button onClick={(event) => correct(event)}>Correct</button>}
           {state.shuffle ? <button onClick={() => shuffleOff()}>Shuffle Off</button> : <button onClick={() => shuffleOn()}>Shuffle</button>}
-          <button
-            onClick={() => {
-              removeCard("studyDeck");
-            }}
-          >
-            Remove From Study Deck
-          </button>
+          {checkIfInDeck("studyDeck", state.thisDeck[state.currentIndex].word) && (
+            <button
+              onClick={() => {
+                removeCard("studyDeck");
+              }}
+            >
+              Remove From Study Deck
+            </button>
+          )}
           {checkIfInDeck("favDeck", state.thisDeck[state.currentIndex].word) ? (
             <button
               onClick={() => {
