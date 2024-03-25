@@ -189,5 +189,3 @@ export default function (props) {
     </>
   );
 }
-
-// make remove button and the counter for each deck work properly along with updating the display of the deck on click

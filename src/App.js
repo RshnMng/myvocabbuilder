@@ -6,8 +6,8 @@ import Trainer from "./pages/Trainer";
 import Welcome from "./pages/Welcome";
 import Study from "./pages/Study";
 import StudyDeck from "./pages/StudyDeck";
-import StruggleDeck from "./pages/StruggleDeck";
-import FavoriteDeck from "./pages/FavoritesDeck";
+import Dojo from "./pages/Dojo";
+
 import "./App.css";
 
 export const Context = createContext();
@@ -129,6 +129,7 @@ export default function App() {
             <Route path="/studydeck" element={<StudyDeck name={"studyDeck"} />} />
             <Route path="/struggledeck" element={<StudyDeck name={"struggleDeck"} />} />
             <Route path="/favorites" element={<StudyDeck name={"favDeck"} />} />
+            <Route path="/dojo" element={<Dojo />} />
           </Routes>
         </Context.Provider>
       </BrowserRouter>
