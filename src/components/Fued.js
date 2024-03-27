@@ -11,10 +11,12 @@ export default function Fued() {
   let synonyms = state.synonyms;
   let antonyms = state.antonyms;
   let saveToDeck = state.saveToDeck;
+
   console.log(state);
 
   let [dojo, setDojo] = useState({
     answer: "",
+    usedIndex: [],
   });
 
   function handleChange(event) {
@@ -33,9 +35,21 @@ export default function Fued() {
   function displayAnswer() {
     let answerHTML = document.getElementsByClassName("fued-answer");
     let answerElem = Array.from(answerHTML);
-    let answerElemIndex = Math.floor(Math.random() * 6);
-    answerElem[answerElemIndex].textContent = dojo.answer;
+    findOpenIndex(answerElem, dojo.usedIndex);
   }
+
+  function findOpenIndex(ansarr, arr) {
+    let randomIndex = Math.floor(Math.random() * 6);
+    arr.includes(randomIndex)
+      ? findOpenIndex(ansarr, arr)
+      : setDojo((prevState) => {
+          ansarr[randomIndex].textContent = dojo.answer;
+          arr.push(randomIndex);
+          return { ...prevState, usedIndex: arr };
+        });
+  }
+
+  console.log(dojo);
 
   // create a function that taks an array of numbers that represent index places of
   // answerHTML array, create a random number that excludes whatever numbers are in this
