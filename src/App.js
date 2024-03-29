@@ -12,6 +12,8 @@ import "./App.css";
 
 export const Context = createContext();
 
+console.log(process.env.REACT_APP_DICT_KEY, process.env.REACT_APP_SYN_KEY);
+
 export default function App() {
   const synKey = process.env.REACT_APP_SYN_KEY;
   const dictKey = process.env.REACT_APP_DICT_KEY;
@@ -24,6 +26,10 @@ export default function App() {
     associatedWords: [],
     synonyms: [],
     antonyms: [],
+    synCopy: [],
+    antCopy: [],
+    usedIndex: [],
+    userAnswer: [],
     dojoDeck: [],
     didYouMean: [],
     favDeck: [],
@@ -91,6 +97,8 @@ export default function App() {
                     associatedWords: [...prevState.associatedWords, ...entry.meta.stems],
                     synonyms: [...prevState.synonyms, ...syns],
                     antonyms: [...prevState.antonyms, ...ants],
+                    synCopy: [...prevState.synonyms, ...syns],
+                    antCopy: [...prevState.antonyms, ...ants],
                   };
                 });
               });
@@ -119,7 +127,7 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
-        <Context.Provider value={state}>
+        <Context.Provider value={{ state, setState }}>
           <Routes>
             <Route path="/" element={<Welcome />}></Route>
             <Route path="/choose" element={<ChoosePath />} />

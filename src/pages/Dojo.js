@@ -1,11 +1,11 @@
 import Search from "../components/Search";
 import Random from "../components/Random";
-import { Context } from "../App";
-import React, { useContext, useState } from "react";
+// import { Context } from "../App";
+// import React, { useContext, useState } from "react";
 import Fued from "../components/Fued";
 
 export default function Dojo() {
-  let state = useContext(Context);
+  // let state = useContext(Context);
 
   return (
     <>

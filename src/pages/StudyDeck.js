@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function (props) {
+export default function StudyDeck(props) {
   let { name } = props;
   console.log(name);
   let cardsJSON = localStorage.getItem(name);
@@ -26,7 +26,7 @@ export default function (props) {
 
   function correct(event) {
     setState((prevState) => {
-      event.target.value == "correct" ? state.thisDeck[state.currentIndex].correct.push(true) : state.thisDeck[state.currentIndex].correct.push(false);
+      event.target.value === "correct" ? state.thisDeck[state.currentIndex].correct.push(true) : state.thisDeck[state.currentIndex].correct.push(false);
       let index = state.currentIndex + 1;
       index >= state.thisDeck.length ? (index = 0) : (index = index);
       state.currentCard >= state.thisDeck.length && (state.currentCard = 0);

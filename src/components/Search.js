@@ -2,7 +2,8 @@ import { Context } from "../App";
 import { useContext } from "react";
 
 export default function Search() {
-  let state = useContext(Context);
+  let app = useContext(Context);
+  let state = app.state;
   let updateInput = state.updateInput;
   let handleSearch = state.handleSearch;
   let searchedWord = state.searchedWord;

@@ -1,28 +1,25 @@
 import { Context } from "../App";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export default function Fued() {
-  let state = useContext(Context);
+  let app = useContext(Context);
+  let state = app.state;
+  let setState = app.setState;
   let foundWord = state.foundWord;
   let searchWord = state.searchWord;
   let definitions = state.definitions;
-  let associatedWords = state.associatedWords;
-  let synonyms = state.synonyms;
-  let antonyms = state.antonyms;
-  let saveToDeck = state.saveToDeck;
+  // let associatedWords = state.associatedWords;
+  let synCopy = state.synCopy;
+  // let antonyms = state.antCopy;
+  // let saveToDeck = state.saveToDeck;
 
   console.log(state);
 
-  let [dojo, setDojo] = useState({
-    answer: "",
-    usedIndex: [],
-  });
-
   function handleChange(event) {
     let answer = event.target.value;
-    setDojo((prevState) => {
-      return { ...prevState, answer: answer };
+    setState((prevState) => {
+      return { ...prevState, userAnswer: answer };
     });
   }
 
@@ -35,26 +32,31 @@ export default function Fued() {
   function displayAnswer() {
     let answerHTML = document.getElementsByClassName("fued-answer");
     let answerElem = Array.from(answerHTML);
-    findOpenIndex(answerElem, dojo.usedIndex);
+    findOpenIndex(answerElem, state.usedIndex);
+    removeFromCopyList(state.userAnswer, synCopy, "synCopy");
   }
 
   function findOpenIndex(ansarr, arr) {
     let randomIndex = Math.floor(Math.random() * 6);
     arr.includes(randomIndex)
       ? findOpenIndex(ansarr, arr)
-      : setDojo((prevState) => {
-          ansarr[randomIndex].textContent = dojo.answer;
+      : setState((prevState) => {
+          ansarr[randomIndex].textContent = state.userAnswer;
           arr.push(randomIndex);
           return { ...prevState, usedIndex: arr };
         });
   }
 
-  console.log(dojo);
-
-  // create a function that taks an array of numbers that represent index places of
-  // answerHTML array, create a random number that excludes whatever numbers are in this
-  // array - we want to be able to randomly add answers to any available spave on the
-  // answer board
+  function removeFromCopyList(answer, array, name) {
+    console.log({ [array]: array });
+    let newArr;
+    console.log(array.includes(answer));
+    array.includes(answer) ? (newArr = array.filter((items) => items !== answer)) : (newArr = array);
+    console.log(newArr);
+    setState((prevState) => {
+      return { ...prevState, [name]: newArr };
+    });
+  }
 
   // we also need to create a copy of these arrays we can modify in the dojo state, so
   // we can remove the correct answers as we come acorss them so we can make sure duplicate
@@ -86,7 +88,7 @@ export default function Fued() {
         <div className="fued-answer">6</div>
 
         <input type="text" className="fued-input" onChange={(event) => handleChange(event)}></input>
-        <button onClick={() => isCorrect(dojo.answer, state.synonyms)}>enter</button>
+        <button onClick={() => isCorrect(state.userAnswer, synCopy)}>enter</button>
 
         {/* <div className="def-synonyms">
           <WordSections title="Synonyms" array={synonyms} limit={6} index={0} />
@@ -111,7 +113,13 @@ export default function Fued() {
   );
 }
 
-// create functionality to study and go through deck
+// make so you can choose antonoyms or synonyms to train; adjust functions to repsond properly to choices
+// make so if answer is entered that has already been answered the user is alerted
+// if all 6 anwers are answered ask if they want to do 6 more?
+// choose how many definitions are goinng to be put, create a see more button for it (dictionary side and dojo side)
+// is dojo going to pool all anytonyms and synonyms for a word or just one particular usage?
+// create save to dojo button
+// create save to dojo deck
 // add home btn or some button to navigate out of this page
 // also create place holder display for the period before someone searches thier first word
 // make it so all synonyms and antonym can be clicked on and when clicked on it fires the handle search function searching the clicked word
