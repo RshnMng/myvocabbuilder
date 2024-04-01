@@ -19,6 +19,7 @@ export default function App() {
   const dictKey = process.env.REACT_APP_DICT_KEY;
   const [state, setState] = useState({
     dictionary: require("an-array-of-english-words"),
+    firstUse: true,
     wordData: [],
     searchedWord: "",
     foundWord: "",
@@ -34,6 +35,7 @@ export default function App() {
     didYouMean: [],
     favDeck: [],
     struggleDeck: [],
+    chosenSynAnt: "synonym",
     updateInput: (event) => {
       setState((prevState) => {
         return { ...prevState, searchedWord: event.target.value };
@@ -91,6 +93,7 @@ export default function App() {
                 setState((prevState) => {
                   return {
                     ...prevState,
+                    firstUse: false,
                     foundWord: data[0].hwi.hw,
                     wordData: data,
                     definitions: { ...prevState.definitions, [entry.fl]: entry.shortdef },

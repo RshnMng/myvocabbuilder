@@ -10,9 +10,11 @@ export default function Fued() {
   let searchWord = state.searchWord;
   let definitions = state.definitions;
   // let associatedWords = state.associatedWords;
+  let firstUse = state.firstUse;
   let synCopy = state.synCopy;
-  // let antonyms = state.antCopy;
+  let antCopy = state.antCopy;
   // let saveToDeck = state.saveToDeck;
+  let synAntChoice = state.chosenSynAnt;
 
   console.log(state);
 
@@ -58,10 +60,6 @@ export default function Fued() {
     });
   }
 
-  // we also need to create a copy of these arrays we can modify in the dojo state, so
-  // we can remove the correct answers as we come acorss them so we can make sure duplicate
-  // answers are not recognized
-
   function showX() {
     console.log("X");
   }
@@ -88,15 +86,29 @@ export default function Fued() {
         <div className="fued-answer">6</div>
 
         <input type="text" className="fued-input" onChange={(event) => handleChange(event)}></input>
-        <button onClick={() => isCorrect(state.userAnswer, synCopy)}>enter</button>
+        {synAntChoice === "synonym" ? <button onClick={() => isCorrect(state.userAnswer, synCopy)}>Enter Synonym</button> : <button onClick={() => isCorrect(state.userAnswer, antCopy)}>Enter Antonym</button>}
+        {antCopy.length === 0 && synAntChoice === "antonym" && firstUse === false ? (
+          <div className="alert alert-light" role="alert">
+            there are no antonyms for this word, would you like to add your own? or train synonyms?
+            <button
+              onClick={() =>
+                setState((prevState) => {
+                  return { ...prevState, chosenSynAnt: "synonym" };
+                })
+              }
+            >
+              Train Synonyms
+            </button>
+            <button>Add Antonyms</button>
+          </div>
+        ) : synCopy.length === 0 && synAntChoice === "synonym" && firstUse === false ? (
+          <div className="alert alert-light" role="alert">
+            there are no synonyms for this word, would you like to add your own? or train antonyms?
+            <button className="btn-success">Train Antonyms</button>
+            <button className="btn-secondary">Add Synonyms</button>
+          </div>
+        ) : null}
 
-        {/* <div className="def-synonyms">
-          <WordSections title="Synonyms" array={synonyms} limit={6} index={0} />
-        </div>
-
-        <div className="def-antonyms">
-          <WordSections title="Antonyms" array={antonyms} limit={6} index={0} />
-        </div> */}
         {/* <div className="study-btn-div d-flex">
           <button className="study-btn" onClick={() => saveToDeck(state, "studyDeck")}>
             add to study
@@ -113,7 +125,7 @@ export default function Fued() {
   );
 }
 
-// make so you can choose antonoyms or synonyms to train; adjust functions to repsond properly to choices
+// adjust functions to repsond properly to choices
 // make so if answer is entered that has already been answered the user is alerted
 // if all 6 anwers are answered ask if they want to do 6 more?
 // choose how many definitions are goinng to be put, create a see more button for it (dictionary side and dojo side)
