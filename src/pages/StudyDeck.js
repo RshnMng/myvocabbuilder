@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function StudyDeck(props) {
   let { name } = props;
-  console.log(name);
+
   let cardsJSON = localStorage.getItem(name);
   let studyCards = JSON.parse(cardsJSON);
   let [state, setState] = useState({
@@ -99,8 +99,6 @@ export default function StudyDeck(props) {
       return { ...prevState, shuffle: false, front: true };
     });
   }
-
-  console.log(state);
 
   return (
     <>

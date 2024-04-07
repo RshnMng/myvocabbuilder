@@ -17,8 +17,6 @@ export default function Dojo() {
     });
   }
 
-  console.log(state);
-
   return (
     <>
       <div className="container-fliud">

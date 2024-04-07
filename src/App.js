@@ -12,9 +12,8 @@ import "./App.css";
 
 export const Context = createContext();
 
-console.log(process.env.REACT_APP_DICT_KEY, process.env.REACT_APP_SYN_KEY);
-
 export default function App() {
+  let index = 0;
   const synKey = process.env.REACT_APP_SYN_KEY;
   const dictKey = process.env.REACT_APP_DICT_KEY;
   const [state, setState] = useState({
@@ -35,6 +34,7 @@ export default function App() {
     didYouMean: [],
     favDeck: [],
     struggleDeck: [],
+    dojoDeck: [],
     chosenSynAnt: "synonym",
     updateInput: (event) => {
       setState((prevState) => {
@@ -56,14 +56,15 @@ export default function App() {
       });
     },
     handleSearch: (word, resetFunc) => {
+      let defs = [];
       resetFunc();
-      fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${dictKey}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setState((prevState) => {
-            return { ...prevState, definitions: { ...prevState.definitions, [data[0].fl]: data[0].shortdef } };
-          });
-        });
+      // fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${dictKey}`)
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     // setState((prevState) => {
+      //     //   return { ...prevState, definitions: { ...prevState.definitions, [data[0].fl]: data[0].shortdef } };
+      //     // });
+      //   });
       fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${synKey}`)
         .then((response) => response.json())
         .then((data) => {
@@ -71,38 +72,52 @@ export default function App() {
             ? setState((prevState) => {
                 return { ...prevState, didYouMean: data };
               })
-            : data.forEach((entry) => {
-                let syns = [];
-                let ants = [];
-                entry.meta.syns.forEach((array) => syns.push(...array));
-                entry.def[0].sseq.forEach((array) => {
-                  array[0][1].ant_list &&
-                    array[0][1].ant_list.forEach((array) => {
-                      array.forEach((item) => ants.push(item.wd));
+            : data.map((entry) => {
+                entry.def[0].sseq.map((item) => {
+                  index = index += 1;
+
+                  let partOfSpeech = entry.fl;
+                  let associatedWords = entry.meta.stems;
+                  let definition = item[0][1].dt[0][1];
+                  let worduse = entry.hwi.hw;
+                  let example = item[0][1].dt[1] ? item[0][1].dt[1][1][0].t : null;
+                  let synonyms = [];
+                  let antonyms = [];
+
+                  item[0][1].rel_list &&
+                    item[0][1].rel_list.map((array) => {
+                      let syn = array[0].wd;
+                      synonyms.push(syn);
+                    });
+                  item[0][1].syn_list &&
+                    item[0][1].syn_list.map((array) => {
+                      let syn = array[0].wd;
+                      synonyms.push(syn);
                     });
 
-                  array[0][1].near_list &&
-                    array[0][1].near_list.forEach((array) => {
-                      array.forEach((item) => ants.push(item.wd));
+                  item[0][1].near_list &&
+                    item[0][1].near_list.map((array) => {
+                      let ant = array[0].wd;
+                      antonyms.push(ant);
                     });
-                  array[0][1].rel_list &&
-                    array[0][1].rel_list.forEach((array) => {
-                      array.forEach((item) => syns.push(item.wd));
+                  item[0][1].ant_list &&
+                    item[0][1].ant_list.map((array) => {
+                      let ant = array[0].wd;
+                      antonyms.push(ant);
                     });
-                });
-                setState((prevState) => {
-                  return {
-                    ...prevState,
-                    firstUse: false,
-                    foundWord: data[0].hwi.hw,
-                    wordData: data,
-                    definitions: { ...prevState.definitions, [entry.fl]: entry.shortdef },
-                    associatedWords: [...prevState.associatedWords, ...entry.meta.stems],
-                    synonyms: [...prevState.synonyms, ...syns],
-                    antonyms: [...prevState.antonyms, ...ants],
-                    synCopy: [...prevState.synonyms, ...syns],
-                    antCopy: [...prevState.antonyms, ...ants],
-                  };
+
+                  let wordArr = [partOfSpeech, definition, worduse, example, synonyms, antonyms, index];
+                  defs.push(wordArr);
+                  setState((prevState) => {
+                    return {
+                      ...prevState,
+                      firstUse: false,
+                      foundWord: data[0].hwi.hw,
+                      wordData: data,
+                      definitions: defs,
+                      associatedWords: [...prevState.associatedWords, ...associatedWords],
+                    };
+                  });
                 });
               });
         });
@@ -126,7 +141,7 @@ export default function App() {
       localStorage.setItem(name, arrayJSON);
     },
   });
-
+  console.log(state);
   return (
     <>
       <BrowserRouter>

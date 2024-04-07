@@ -1,6 +1,6 @@
 import { Context } from "../App";
 import { useContext, useState } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Fued() {
   let app = useContext(Context);
@@ -9,14 +9,12 @@ export default function Fued() {
   let foundWord = state.foundWord;
   let searchWord = state.searchWord;
   let definitions = state.definitions;
-  // let associatedWords = state.associatedWords;
   let firstUse = state.firstUse;
   let synCopy = state.synCopy;
   let antCopy = state.antCopy;
-  // let saveToDeck = state.saveToDeck;
+  let saveToDeck = state.saveToDeck;
   let synAntChoice = state.chosenSynAnt;
-
-  console.log(state);
+  let dojoDeck = state.dojoDeck;
 
   function handleChange(event) {
     let answer = event.target.value;
@@ -50,11 +48,10 @@ export default function Fued() {
   }
 
   function removeFromCopyList(answer, array, name) {
-    console.log({ [array]: array });
     let newArr;
-    console.log(array.includes(answer));
+
     array.includes(answer) ? (newArr = array.filter((items) => items !== answer)) : (newArr = array);
-    console.log(newArr);
+
     setState((prevState) => {
       return { ...prevState, [name]: newArr };
     });
@@ -99,7 +96,7 @@ export default function Fued() {
             >
               Train Synonyms
             </button>
-            <button>Add Antonyms</button>
+            <button onClick={() => saveToDeck(state, "dojo")}>Add Antonyms</button>
           </div>
         ) : synCopy.length === 0 && synAntChoice === "synonym" && firstUse === false ? (
           <div className="alert alert-light" role="alert">
@@ -109,23 +106,32 @@ export default function Fued() {
           </div>
         ) : null}
 
-        {/* <div className="study-btn-div d-flex">
+        <div className="study-btn-div d-flex">
           <button className="study-btn" onClick={() => saveToDeck(state, "studyDeck")}>
             add to study
           </button>
           <button className="fav-btn" onClick={() => saveToDeck(state, "favDeck")}>
             add to favorites
           </button>
+          <button className="fav-btn" onClick={() => saveToDeck(state, "dojo")}>
+            add to dojo deck
+          </button>
           <Link to="/trainer">
-            <button className="def-home-btn">Go To Trainer</button>
-          </Link> */}
-        {/* </div> */}
+            <button className="def-home-btn">Go To Decks</button>
+          </Link>
+          <Link to="/choose">
+            <button className="def-home-btn">Home</button>
+          </Link>
+        </div>
       </div>
     </>
   );
 }
 
-// adjust functions to repsond properly to choices
+// add function to add own antonyms or snynonyms that adds to ant and syn array , not the copy and saves to local
+// make it so if someone wants to delete a word outside of a study deck that has custom definitions, antonyms, or synonyms they are alerted that those will be removed permantley
+// make sure the alert that pops up for the antonyms also works for synonyms if there are none.
+// try adjusting checked radio buttons by using onChange instead of using conditional rendering like we have now
 // make so if answer is entered that has already been answered the user is alerted
 // if all 6 anwers are answered ask if they want to do 6 more?
 // choose how many definitions are goinng to be put, create a see more button for it (dictionary side and dojo side)
