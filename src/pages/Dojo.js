@@ -2,7 +2,7 @@ import Search from "../components/Search";
 import Random from "../components/Random";
 import { Context } from "../App";
 import React, { useContext, useState } from "react";
-import Fued from "../components/Fued";
+import DojoDisplay from "../components/DojoDisplay";
 
 export default function Dojo() {
   let app = useContext(Context);
@@ -56,7 +56,7 @@ export default function Dojo() {
             </div>
           </div>
           <div className="col-6 dict-def">
-            <Fued />
+            <DojoDisplay />
           </div>
         </div>
       </div>

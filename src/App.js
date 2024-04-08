@@ -19,10 +19,12 @@ export default function App() {
   const [state, setState] = useState({
     dictionary: require("an-array-of-english-words"),
     firstUse: true,
+    addSyn: false,
+    addAnt: false,
     wordData: [],
     searchedWord: "",
     foundWord: "",
-    definitions: {},
+    definitions: [],
     associatedWords: [],
     synonyms: [],
     antonyms: [],
@@ -46,7 +48,7 @@ export default function App() {
         return {
           ...prevState,
           foundWord: "",
-          definitions: {},
+          definitions: [],
           associatedWords: [],
           synonyms: [],
           antonyms: [],
@@ -141,7 +143,7 @@ export default function App() {
       localStorage.setItem(name, arrayJSON);
     },
   });
-  console.log(state);
+
   return (
     <>
       <BrowserRouter>
