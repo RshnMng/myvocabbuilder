@@ -23,7 +23,9 @@ export default function DojoDisplay() {
     </>
   );
 }
-// display only the add synonym/ antonym pop up for that particular definition
+
+// creat functionality that allows you to actually add synonym or antonyms and have it show on screen
+// in real time. Also add to local storage so when we study thay definition, it dtays a part of the definition
 
 // be able to select multiple defs and add to dojo deck/study decks
 // add study button that promps whether you want to do synonym or antonyms
