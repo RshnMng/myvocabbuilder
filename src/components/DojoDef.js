@@ -1,11 +1,13 @@
 import { Context } from "../App";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export default function DojoDef(props) {
   let { def, i } = props;
   let app = useContext(Context);
+  let state = app.state;
   let definitions = app.state.definitions;
+  let dojoDeck = app.state.dojoDeck;
   let setState = app.setState;
 
   let [component, setComponent] = useState({
@@ -40,17 +42,35 @@ export default function DojoDef(props) {
     let index;
     name === "syn" ? (index = 4) : (index = 5);
 
+    console.log(index);
+
     let chosenArr = definitions[id][index];
 
     index === 4 ? chosenArr.push(component.syn) : chosenArr.push(component.ant);
 
-    definitions[id].splice(4, 1, chosenArr);
+    index === 4 ? definitions[id].splice(4, 1, chosenArr) : definitions[id].splice(5, 1, chosenArr);
 
     setState((prevState) => {
       return { ...prevState, definitions: definitions };
     });
+    setComponent(() => {
+      return { syn: "", ant: "" };
+    });
   }
 
+  function addToDojoDeck(event) {
+    console.log("func ran");
+    let index = event.target.id;
+    let chosenDef = definitions[index];
+
+    // adjust this function so it checks dojo deck and see if the chosen array is already in array and if so,
+    // find if so, it modifies the deck in dojo either by adjusting it or just replacing it all together
+
+    setState((prevState) => {
+      return { ...prevState, dojoDeck: [...prevState.dojoDeck, chosenDef] };
+    });
+  }
+  console.log(state);
   return (
     <>
       <div key={i}>
@@ -97,7 +117,13 @@ export default function DojoDef(props) {
             <div>Add Synonym</div>
 
             <input type="text" onChange={(event) => updateInput(event, "syn")} />
-            <button id={i} onClick={(event) => addNewNym(event, "syn")}>
+            <button
+              id={i}
+              onClick={(event) => {
+                addNewNym(event, "syn");
+                addToDojoDeck(event);
+              }}
+            >
               save
             </button>
           </div>
