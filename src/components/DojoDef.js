@@ -38,39 +38,48 @@ export default function DojoDef(props) {
   }
 
   function addNewNym(event, name) {
-    let id = event.target.id;
+    let defId = event.target.id;
+    let chosenWord = definitions[defId];
+    let chosenDefinition = chosenWord[1];
+    let storageJSON;
+    localStorage.getItem("dojoDeck") === null ? (storageJSON = JSON.stringify([])) : (storageJSON = localStorage.getItem("dojoDeck"));
+    let storageDeck = JSON.parse(storageJSON);
     let index;
     name === "syn" ? (index = 4) : (index = 5);
+    let chosenArr = chosenWord[index];
 
-    console.log(index);
+    let inStorage = isInStorage(chosenDefinition, storageDeck);
 
-    let chosenArr = definitions[id][index];
-
-    index === 4 ? chosenArr.push(component.syn) : chosenArr.push(component.ant);
-
-    index === 4 ? definitions[id].splice(4, 1, chosenArr) : definitions[id].splice(5, 1, chosenArr);
-
-    setState((prevState) => {
-      return { ...prevState, definitions: definitions };
-    });
-    setComponent(() => {
-      return { syn: "", ant: "" };
-    });
+    inStorage ? addToExisting(chosenArr, storageDeck, chosenWord, index) : addNew();
   }
 
-  function addToDojoDeck(event) {
-    console.log("func ran");
-    let index = event.target.id;
-    let chosenDef = definitions[index];
+  function isInStorage(definition, deck) {
+    let storageDefs = [];
 
-    // adjust this function so it checks dojo deck and see if the chosen array is already in array and if so,
-    // find if so, it modifies the deck in dojo either by adjusting it or just replacing it all together
-
-    setState((prevState) => {
-      return { ...prevState, dojoDeck: [...prevState.dojoDeck, chosenDef] };
+    deck.forEach((item) => {
+      storageDefs.push(item[1]);
     });
+
+    let inStorage = storageDefs.includes(definition);
+    return inStorage;
   }
-  console.log(state);
+
+  function addToExisting(arr, storageDeck, wordInfo, id, name) {
+    name === "syn" ? arr.push(component.syn) : arr.push(component.ant);
+    storageDeck.forEach((item) => {
+      item[1] === wordInfo[1] && item[id].splice(0, item[id].length, arr);
+    });
+    setState((prevState) => {
+      return { ...prevState, dojoDeck: storageDeck };
+    });
+
+    let storageJSON = JSON.stringify(storageDeck);
+    localStorage.setItem("dojoDeck", storageJSON);
+  }
+
+  function addNew() {
+    console.log("adding new"); // add a new word/synonym to dojo deck when not already in storage
+  }
   return (
     <>
       <div key={i}>
@@ -121,7 +130,6 @@ export default function DojoDef(props) {
               id={i}
               onClick={(event) => {
                 addNewNym(event, "syn");
-                addToDojoDeck(event);
               }}
             >
               save
