@@ -50,7 +50,7 @@ export default function DojoDef(props) {
 
     let inStorage = isInStorage(chosenDefinition, storageDeck);
 
-    inStorage ? addToExisting(chosenArr, storageDeck, chosenWord, index) : addNew();
+    inStorage ? addToExisting(chosenArr, storageDeck, chosenWord, index, name) : addNew(chosenArr, storageDeck, chosenWord, index, name);
   }
 
   function isInStorage(definition, deck) {
@@ -64,21 +64,26 @@ export default function DojoDef(props) {
     return inStorage;
   }
 
-  function addToExisting(arr, storageDeck, wordInfo, id, name) {
+  function addToExisting(arr, storage, wordInfo, id, name) {
     name === "syn" ? arr.push(component.syn) : arr.push(component.ant);
-    storageDeck.forEach((item) => {
+    storage.forEach((item) => {
       item[1] === wordInfo[1] && item[id].splice(0, item[id].length, arr);
     });
     setState((prevState) => {
-      return { ...prevState, dojoDeck: storageDeck };
+      return { ...prevState, dojoDeck: storage };
     });
 
-    let storageJSON = JSON.stringify(storageDeck);
+    let storageJSON = JSON.stringify(storage);
     localStorage.setItem("dojoDeck", storageJSON);
   }
 
-  function addNew() {
-    console.log("adding new"); // add a new word/synonym to dojo deck when not already in storage
+  function addNew(arr, storage, wordInfo, id, name) {
+    name === "syn" ? arr.push(component.syn) : arr.push(component.ant);
+
+    storage.push(wordInfo);
+
+    let storageJSON = JSON.stringify(storage);
+    localStorage.setItem("dojoDeck", storageJSON);
   }
   return (
     <>
