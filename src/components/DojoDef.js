@@ -92,28 +92,36 @@ export default function DojoDef(props) {
     let storageJSON = JSON.stringify(storage);
     localStorage.setItem("dojoDeck", storageJSON);
   }
-
+  let thisDef = def[1];
+  let storageJSON = localStorage.getItem("dojoDeck");
+  let storageDeck = JSON.parse(storageJSON);
   return (
     <>
       <div key={i}>
         <div>{def[0]}</div>
-        <div>{def[1]}</div>
+        <div>{thisDef}</div>
         <div>{def[3]}</div>
-        <label>
-          <input
-            type="checkbox"
-            name="add-to-dojo"
-            onClick={() => {
-              setComponent((prevState) => {
-                return { ...prevState, selected: !prevState.selected };
-              });
-              setState((prevState) => {
-                return { ...prevState, defsSelected: [] };
-              });
-            }}
-          />
-          add to dojo
-        </label>
+        {storageDeck.map((item) => {
+          return item[1] === thisDef ? (
+            <div>Already In Deck</div>
+          ) : (
+            <label>
+              <input
+                type="checkbox"
+                name="add-to-dojo"
+                onClick={() => {
+                  setComponent((prevState) => {
+                    return { ...prevState, selected: !prevState.selected };
+                  });
+                  setState((prevState) => {
+                    return { ...prevState, defsSelected: [] };
+                  });
+                }}
+              />
+              add to dojo
+            </label>
+          );
+        })}
         <div>
           <div>synonyms</div>
           {def[4].map((word) => {

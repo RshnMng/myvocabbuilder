@@ -9,8 +9,6 @@ export default function DojoDisplay() {
   let foundWord = state.foundWord;
   let searchWord = state.searchWord;
   let defsSelected = state.defsSelected;
-
-  console.log(defsSelected);
   return (
     <>
       <div className="dict-def-display">
@@ -31,11 +29,6 @@ export default function DojoDisplay() {
     </>
   );
 }
-
-// make a save button appear at the top if any selected check box is clicked
-//use useffect to get dojodeck component to re render when its selected state is
-//changed in component // add true or false to external array based on its state //
-//go through array with includes, use this to display save button
 
 //**************************************************************************************//
 
