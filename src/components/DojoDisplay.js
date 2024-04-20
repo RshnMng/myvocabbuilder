@@ -8,10 +8,18 @@ export default function DojoDisplay() {
   let defs = state.definitions;
   let foundWord = state.foundWord;
   let searchWord = state.searchWord;
+  let defsSelected = state.defsSelected;
 
+  console.log(defsSelected);
   return (
     <>
       <div className="dict-def-display">
+        <label>
+          Select All Definitions
+          <input className="def-select-all" type="checkbox" />
+        </label>
+        {defsSelected.includes(true) === true && <button>Save Definitions</button>}
+
         <div className="def-title">{foundWord === "" ? searchWord : foundWord}</div>
         <div className="def-definitions">
           {defs.length !== 0 &&
@@ -24,12 +32,17 @@ export default function DojoDisplay() {
   );
 }
 
-//  Also  onclick to add synonym / antonym add to dojo deck and  to local storage so when we study thay definition, it dtays a part of the definition with
-// only that particular use of the definitions
+// make a save button appear at the top if any selected check box is clicked
+//use useffect to get dojodeck component to re render when its selected state is
+//changed in component // add true or false to external array based on its state //
+//go through array with includes, use this to display save button
 
-// add a select and deselect all button for dojo defs
+//**************************************************************************************//
 
+// make if definition already in dojo, checkbox doesnt appear; instead show 'already in deck'
 // be able to select multiple defs and add to dojo deck/study decks
+// add functionality to save button that adds all selected defs to dojo deck
+
 // add study button that promps whether you want to do synonym or antonyms
 // on same prompt display how many syns/antonyms there are in teh database and ask how many they would like to go for, max is 6 at a time
 // replace the {it} in the example sentences with italics tags
@@ -48,4 +61,6 @@ export default function DojoDisplay() {
 // also create place holder display for the period before someone searches thier first word
 // make it so all synonyms and antonym can be clicked on and when clicked on it fires the handle search function searching the clicked word
 // make it so when you do search a new word that the limit for both the anytonym and synonyms are set back to 6
+// fix first synonym being added to an empty local storage not showing up on 'add' click
+// fix the fact that local storage syns and ants are contained in double arrays for some reason
 //// go through code and reorganize folders, and files, break into smaller easier to read componenets

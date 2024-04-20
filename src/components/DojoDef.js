@@ -1,30 +1,36 @@
 import { Context } from "../App";
-import { useContext, useState } from "react";
-// import { Link } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
 
 export default function DojoDef(props) {
   let { def, i } = props;
   let app = useContext(Context);
-  let state = app.state;
   let definitions = app.state.definitions;
-  let dojoDeck = app.state.dojoDeck;
   let setState = app.setState;
+  let defsSelected = app.state.defsSelected;
 
   let [component, setComponent] = useState({
     addSyn: false,
     addAnt: false,
     syn: "",
     ant: "",
+    selected: false,
   });
 
-  function addSynonym(event) {
+  useEffect(() => {
+    defsSelected.push(component.selected);
+    setState((prevState) => {
+      return { ...prevState, defsSelected: defsSelected };
+    });
+  }, [setState, component.selected, defsSelected]);
+
+  function addSynonym() {
     let newValue = !component.addSyn;
     setComponent((prevState) => {
       return { ...prevState, addSyn: newValue };
     });
   }
 
-  function addAntonym(event) {
+  function addAntonym() {
     let newValue = !component.addAnt;
     setComponent((prevState) => {
       return { ...prevState, addAnt: newValue };
@@ -44,6 +50,7 @@ export default function DojoDef(props) {
     let storageJSON;
     localStorage.getItem("dojoDeck") === null ? (storageJSON = JSON.stringify([])) : (storageJSON = localStorage.getItem("dojoDeck"));
     let storageDeck = JSON.parse(storageJSON);
+    console.log(storageDeck);
     let index;
     name === "syn" ? (index = 4) : (index = 5);
     let chosenArr = chosenWord[index];
@@ -85,6 +92,7 @@ export default function DojoDef(props) {
     let storageJSON = JSON.stringify(storage);
     localStorage.setItem("dojoDeck", storageJSON);
   }
+
   return (
     <>
       <div key={i}>
@@ -92,7 +100,18 @@ export default function DojoDef(props) {
         <div>{def[1]}</div>
         <div>{def[3]}</div>
         <label>
-          <input type="checkbox" name="add-to-dojo" />
+          <input
+            type="checkbox"
+            name="add-to-dojo"
+            onClick={() => {
+              setComponent((prevState) => {
+                return { ...prevState, selected: !prevState.selected };
+              });
+              setState((prevState) => {
+                return { ...prevState, defsSelected: [] };
+              });
+            }}
+          />
           add to dojo
         </label>
         <div>

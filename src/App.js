@@ -37,6 +37,7 @@ export default function App() {
     favDeck: [],
     struggleDeck: [],
     dojoDeck: [],
+    defsSelected: [],
     chosenSynAnt: "synonym",
     updateInput: (event) => {
       setState((prevState) => {
