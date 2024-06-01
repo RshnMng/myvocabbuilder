@@ -8,7 +8,6 @@ export default function Fued() {
 
 // let index = event.target.id;
 // let wordInfo = defs[index][4];
-// console.log(wordInfo);
 
 // function isCorrect(word, array) {
 //   let inArray = array.includes(word);
@@ -45,7 +44,7 @@ export default function Fued() {
 // }
 
 // function showX() {
-//   console.log("X");
+//   ("X");
 // }
 
 /* {defs.length !== 0 && <button>add definition</button>}

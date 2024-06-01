@@ -9,6 +9,32 @@ export default function DojoDisplay() {
   let foundWord = state.foundWord;
   let searchWord = state.searchWord;
   let defsSelected = state.defsSelected;
+
+  function saveDefsToDojo() {
+    let defs = document.getElementsByClassName("def-definitions");
+    let defElements = defs[0].childNodes;
+    let defElementsArr = Array.from(defElements);
+
+    let storage;
+    let storageJSON = localStorage.getItem("dojoDeck");
+
+    storageJSON === null ? (storage = []) : (storage = JSON.parse(storageJSON));
+
+    defElementsArr.map((element) => {
+      let inputElem = element.childNodes[6].childNodes[0];
+
+      //   .childNodes[6].childNodes[0];
+
+      let hasAttribute = inputElem.hasAttribute("selected");
+      let index = element.getAttribute("id");
+
+      hasAttribute && storage.push(state.definitions[index]);
+
+      let storageJSON = JSON.stringify(storage);
+      localStorage.setItem("dojoDeck", storageJSON);
+    });
+  }
+
   return (
     <>
       <div className="dict-def-display">
@@ -16,7 +42,7 @@ export default function DojoDisplay() {
           Select All Definitions
           <input className="def-select-all" type="checkbox" />
         </label>
-        {defsSelected.includes(true) === true && <button>Save Definitions</button>}
+        {defsSelected.includes(true) === true && <button onClick={() => saveDefsToDojo()}>Save Definitions</button>}
 
         <div className="def-title">{foundWord === "" ? searchWord : foundWord}</div>
         <div className="def-definitions">
@@ -32,8 +58,6 @@ export default function DojoDisplay() {
 
 //**************************************************************************************//
 
-// make if definition already in dojo, checkbox doesnt appear; instead show 'already in deck'
-// be able to select multiple defs and add to dojo deck/study decks
 // add functionality to save button that adds all selected defs to dojo deck
 
 // add study button that promps whether you want to do synonym or antonyms
