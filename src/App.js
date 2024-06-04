@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { wordInfoAndApi } from "./Pages/Utility Pages/WordInfoAndAPI";
 import { globalFunctions } from "./Pages/Utility Pages/GlobalFunctions";
@@ -15,14 +15,11 @@ export default function App() {
   });
   useEffect(() => {
     let areEmpty = local.initialDeckSetUp(); // on page load, checks to see if our decks in local storage are null/undefined - if so it saves it as an empty array so its ready right away;
-    areEmpty // gets boolean from local file whether all decks are empty - sets all decks state variable depending on boolean it gets.
-      ? setAppState((prevState) => {
-          return { ...prevState, allDecksEmpty: true };
-        })
-      : setAppState((prevState) => {
-          return { ...prevState, allDecksEmpty: false };
-        });
-  });
+    // gets boolean from local file whether all decks are empty - sets all decks state variable depending on boolean it gets.
+    setAppState((prevState) => {
+      return { ...prevState, allDecksEmpty: areEmpty }; // sets all decks empty in state
+    });
+  }, [appState.allDecksEmpty]);
 
   return (
     <>
