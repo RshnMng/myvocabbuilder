@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, useContext } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useState, createContext } from "react";
 import { wordInfoAndApi } from "./Pages/Utility Pages/WordInfoAndAPI";
 import { globalFunctions } from "./Pages/Utility Pages/GlobalFunctions";
 import { local } from "./Pages/Utility Pages/LocalStorage";
@@ -8,6 +8,8 @@ import HomePage from "./Pages/Navigation Pages/HomePage";
 import WordSearch from "./Pages/Search Pages/WordSearch";
 import VocabTrainerHome from "./Pages/Vocab Trainer Pages/VocabTrainerHome";
 import StudyDeckHome from "./Pages/Study Deck Pages/StudyDeckHome";
+
+const AppContext = createContext();
 
 export default function App() {
   let [appState, setAppState] = useState({
@@ -24,18 +26,19 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="home" element={<HomePage />} />
-          <Route path="word-search" element={<WordSearch />}></Route>
-          <Route path="vocab-section-home" element={<VocabTrainerHome />} />
-          <Route path="study-deck-home" element={<StudyDeckHome />} />
-        </Routes>
+        <AppContext.Provider value={appState}>
+          {/* passes appstate to other components if needed */}
+          <Routes>
+            <Route path="/" element={<Welcome />} />
+            <Route path="home" element={<HomePage />} />
+            <Route path="word-search" element={<WordSearch />}></Route>
+            <Route path="vocab-section-home" element={<VocabTrainerHome />} />
+            <Route path="study-deck-home" element={<StudyDeckHome />} />
+          </Routes>
+        </AppContext.Provider>
       </BrowserRouter>
     </>
   );
 }
 
-// NEXT STEP//
-
-// if all decks are empty make it so that the button study decks is disabled and unable to be clicked
+export { AppContext };
