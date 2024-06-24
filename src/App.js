@@ -9,6 +9,7 @@ import WordSearch from "./Pages/Search Pages/WordSearch";
 import VocabTrainerHome from "./Pages/Vocab Trainer Pages/VocabTrainerHome";
 import StudyDeckHome from "./Pages/Study Deck Pages/StudyDeckHome";
 
+
 const AppContext = createContext();
 
 export default function App() {
