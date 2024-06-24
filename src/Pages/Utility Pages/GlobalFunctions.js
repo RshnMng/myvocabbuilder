@@ -5,6 +5,7 @@ const globalFunctions = {
     return randomNum;
   },
   removeSpecialChars: function (data){
+    console.log(data, typeof(data))
     let regex = /[^0-9a-zA-Z]+/g
     let newDef = data.replace(regex, ' ');
 
@@ -26,4 +27,5 @@ const globalFunctions = {
 
 export { globalFunctions };
 
- 
+ // i think that data.replace is throwing an error when its being applied to an object, make it so if the data passed into the function is an
+ // object we do not run the function on it, or further destructure the object inside of the removespecial characgters function

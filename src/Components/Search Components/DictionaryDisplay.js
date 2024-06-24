@@ -6,10 +6,6 @@ export default function DictionaryDisplay(props){
     let key = 1;
 
 
-    // useEffect(() => {
-    //     console.log(dictionaryInfo, 'useEffect')
-    // }, [dictionaryInfo])
-
     return <>
    {dictionaryInfo.map((item) => { 
     key++

@@ -13,6 +13,7 @@ export default function WordSearch() {
     dictionaryInfo: [],
     thesaurusInfo: [],
     searchedWord: '',
+    loading: false
   });
 
   function updateUserInput(event) {
@@ -22,18 +23,16 @@ export default function WordSearch() {
   }
 
   function searchWord(word) {
+    setSearchState((prevState) => { return {...prevState, loading: true}})
     fetch(`https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${apiKey}`) // performs api call to word passed into the function
     .then((response) => response.json())
     .then((data) => setSearchState((prevState) => { return {...prevState, searchedWord: searchState.userInput, thesaurusInfo: data}})) // sets the data to wordInfo in searchState and saves the word that was searched into searched word variable and also saves the all the data returned by the api of that word into wordinfo
 
     fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${sndKey}`) // performs api call to word passed into the function
     .then((response) => response.json())
-    .then((data) => setSearchState((prevState) => { return {...prevState, dictionaryInfo: data}}))
+    .then((data) => setSearchState((prevState) => { return {...prevState, dictionaryInfo: data, loading: false}}))
   }
 
-  // useEffect(() => {
-  //   console.log(searchState)
-  // }, [searchState.dictionaryInfo])
 
 
   return (
@@ -50,9 +49,11 @@ export default function WordSearch() {
       {/*on click search word func is ran and is passed in the word saved in searched state by update user input*/ }
 
       <SearchDisplayHeader searchState={searchState}/> {/*displays header for the definiton display area of the page */} 
-    
-      <SearchDisplay dictionaryInfo={searchState.dictionaryInfo} thesaurusInfo={searchState.thesaurusInfo}/> {/*passes word info from both api calls into the component so it can be rendered to the page*/}
-      
+        
+        
+
+      {searchState.loading === true ? <div>Loading...</div> : <SearchDisplay dictionaryInfo={searchState.dictionaryInfo} thesaurusInfo={searchState.thesaurusInfo}/>} {/*passes word info from both api calls into the component so it can be rendered to the page*/}
+
     
     </>
   );

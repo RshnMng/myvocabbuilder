@@ -8,10 +8,7 @@ export default function SearchDisplay(props){
         dictionary: true
     })
 
-    // useEffect(() => {
-    //     console.log(dictionaryInfo, 'useEffect')
-    // }, [dictionaryInfo])
-
+  
     return <>
     <label> Dictionary
     <input type='radio' name='search-type' onClick={() => setDisplayState((prevState) => {return {...prevState, dictionary : true}}) }/> 
