@@ -1,5 +1,13 @@
-export default function ThesaurusDisplay(){
+import ThesaurusWordInfo from "./ThesaurusWordInfo";
+
+export default function ThesaurusDisplay(props){
+    let key = 0;
+    const { thesaurusInfo } = props;
+
     return <>
-    <div>this is the thesaurus data being shown</div>
+    {thesaurusInfo.map((item) => {
+        key++
+        return <ThesaurusWordInfo wordInfo={item} key={key}/>
+    })}
     </>
 }

@@ -26,7 +26,3 @@ export default function DictionaryWordInfo(props){
     </>
 }
 
-{/* NEXT STEPS 
-4. fix replace not a function error
-5. update exposition comments
-*/}

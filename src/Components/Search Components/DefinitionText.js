@@ -35,9 +35,3 @@ export default function DefinitionText(props){
     </>
 }
 
-//NEXT STEPS: 
-
-
-// put notes by all the new code and new files we created // better name files, functions, components, variables if need be
-// save to github
-// continue with dictionary display and getting all the proper info on the screen

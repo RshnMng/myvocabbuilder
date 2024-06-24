@@ -59,6 +59,7 @@ export default function WordSearch() {
   );
 }
   
-// 1. clear dictionary display when new word is searched // 
+
 // 2. get thesaurus display working
 // 3. save to github
+// 4. update exposition sentences
