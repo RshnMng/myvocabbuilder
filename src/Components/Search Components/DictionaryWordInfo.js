@@ -19,7 +19,7 @@ export default function DictionaryWordInfo(props){
     <div>{defState.partOfSpeech}</div> {/*display part of speech, map through defarray, passing each item in that array to its own component as props where that information can be further broken down and manipulated inside its own component - in this case dictionarydefinition+5 */}
     { 
     
-    defState.defArray.map((item) => {
+    defState.defArray.map((item) => { // map through defState defArray and pass the info and the unique key through props to a component named Dictionary Definition
       key++
         return <DictionaryDefinition info={item} key={key}/>
     })} 

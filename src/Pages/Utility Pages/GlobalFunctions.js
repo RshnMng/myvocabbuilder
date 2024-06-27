@@ -1,10 +1,10 @@
 const globalFunctions = {
-  getRandomNumber: function (array) {
+  getRandomNumber: function (array) { // takes an array, finds out how many items are in an array and returns a random number between that nubmer and zero
     let maxNum = array.length;
     let randomNum = Math.floor(Math.random() * maxNum);
     return randomNum;
   },
-  removeSpecialChars: function (data){
+  removeSpecialChars: function (data){ // takes data sees if its am object data type, if so then we save data to an empty string. If its a string then we go through it and remove all the found patterns we find given to us by the API
     let regex;
     typeof(data) === 'object' ? data = '' : 
      regex = /[^0-9a-zA-Z]+/g

@@ -3,12 +3,12 @@ import SearchDisplayHeader from "../../Components/Search Components/SearchDispla
 import SearchDisplay from "../../Components/Search Components/SearchDisplay";
 
 export default function WordSearch() {
-  const apiKey = process.env.REACT_APP_SYN_KEY; 
+  const apiKey = process.env.REACT_APP_SYN_KEY;  // api keys to use during api call
   const sndKey = process.env.REACT_APP_DICT_KEY;
   
 
    
-  const [searchState, setSearchState] = useState({
+  const [searchState, setSearchState] = useState({ // sets a state and updates on each api call 
     userInput: '', 
     dictionaryInfo: [],
     thesaurusInfo: [],
@@ -30,7 +30,7 @@ export default function WordSearch() {
 
     fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${sndKey}`) // performs api call to word passed into the function
     .then((response) => response.json())
-    .then((data) => setSearchState((prevState) => { return {...prevState, dictionaryInfo: data, loading: false}}))
+    .then((data) => setSearchState((prevState) => { return {...prevState, dictionaryInfo: data, loading: false}})) //sets state using information returned from the api call 
   }
 
 
@@ -39,7 +39,7 @@ export default function WordSearch() {
     <>
       <div>Dictionary & Thesaurus</div>
       <input type="text" onChange={(event) => updateUserInput(event)} /> {/* fires function when ever something is tpyed in box */}
-      <button onClick={() => {
+      <button onClick={() => { // empties current state and display while a new api fetch request is made and updated again when the info is successfully retrieved
         searchWord(searchState.userInput)
         setSearchState((prevState) => {
           return {...prevState, dictionaryInfo: [], thesaurusInfo: []}
