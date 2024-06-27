@@ -16,7 +16,7 @@ export default function ThesaurusWordInfo(props){
     return <>
         {thesState.thesDefArray.map((item) => { // maps through the array and passes item info and key through props to be used in thesauraus definition
             key++ 
-            return <ThesaurusDefinition definitionInfo={item} key={key}/>
+            return <ThesaurusDefinition definitionInfo={item} key={key} partOfSpeech={thesState.partOfSpeech}/>
         })}
     </>
 }

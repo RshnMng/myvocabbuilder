@@ -28,8 +28,6 @@ export default function DefinitionText(props){
    useEffect(() => {
     setTextState((prevState) => { return {...prevState, defText: cleanDef, defExample: cleanExample}})
    }, [textState.defText, textState.defExample]) // cleanDef and cleanExample are saved in text state as deftext and defexample
-
-   console.log(textState)
   
    
     return <>

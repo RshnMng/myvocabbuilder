@@ -3,7 +3,7 @@ import { wordInfoAndApi } from '../../Pages/Utility Pages/WordInfoAndAPI';
 import { globalFunctions } from '../../Pages/Utility Pages/GlobalFunctions';
 
 export default function ThesaurusText(props){
-    let {textContent} = props; // import props and save in variable
+    let {textContent, partOfSpeech} = props; // import props and save in variable
     let exampleTxt;             // declare variable to be used later
     let defTxt = textContent[1].dt[0][1]; // gets definition and save into variable defTxt
 
@@ -23,16 +23,25 @@ export default function ThesaurusText(props){
         synonyms: syns
     })
 
- 
+ console.log(textState);
+
    
 
     return <>
-        <div>check</div>
+        <div>{partOfSpeech} </div>
+        <div>{textState.definitionText}</div>
+        <div>{textState.exampleText}</div>
+        {textState.synonyms.length > 0 && <button>Show Synonyms</button>} 
+        {textState.antonyms.length > 0 && <button>Show Antonyms</button>}
     </>
 }
 
 //Next Steps //
 
-
-// 3. update comments in app
-// 4. display thesaurus info to screen 
+// turn synonym and antonym buttons into their own components, when there are syns or ants display show button
+// when not display add button
+// when show button is clicked it shows 6 more, there is also a see more button displayed, a close button and an add button
+// when all syns or antonyms are displayed, the see more goes away
+// add button clicked, a pop up comes up with a space to add a word and an example sentence 
+// on save, a pop up will come up explaining that adding a modification will automatically save the word and definition to your study deck, continue?
+// create add to deck functionality for dictionary and thesaurus
