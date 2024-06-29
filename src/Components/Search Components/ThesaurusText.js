@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { wordInfoAndApi } from '../../Pages/Utility Pages/WordInfoAndAPI';
 import { globalFunctions } from '../../Pages/Utility Pages/GlobalFunctions';
+import ThesaurusButtons from './ThesaurusButtons';
 
 export default function ThesaurusText(props){
     let {textContent, partOfSpeech} = props; // import props and save in variable
@@ -23,7 +24,6 @@ export default function ThesaurusText(props){
         synonyms: syns
     })
 
- console.log(textState);
 
    
 
@@ -31,17 +31,12 @@ export default function ThesaurusText(props){
         <div>{partOfSpeech} </div>
         <div>{textState.definitionText}</div>
         <div>{textState.exampleText}</div>
-        {textState.synonyms.length > 0 && <button>Show Synonyms</button>} 
-        {textState.antonyms.length > 0 && <button>Show Antonyms</button>}
+        <ThesaurusButtons synonyms={textState.synonyms} antonyms={textState.antonyms} />
     </>
 }
 
 //Next Steps //
 
-// turn synonym and antonym buttons into their own components, when there are syns or ants display show button
-// when not display add button
-// when show button is clicked it shows 6 more, there is also a see more button displayed, a close button and an add button
-// when all syns or antonyms are displayed, the see more goes away
 // add button clicked, a pop up comes up with a space to add a word and an example sentence 
 // on save, a pop up will come up explaining that adding a modification will automatically save the word and definition to your study deck, continue?
 // create add to deck functionality for dictionary and thesaurus
