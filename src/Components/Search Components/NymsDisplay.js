@@ -1,8 +1,10 @@
 import {useState, useEffect} from 'react';
+import AddNyms from './AddNyms';
 
 export default function NymsDisplay(props){
     let {nyms, type} = props;
     let [nymsState, setNymsState] = useState({
+        nyms : nyms,
         showAmount: 6,
         display: []
     })
@@ -14,13 +16,13 @@ useEffect(() => { // loops through array passed in through props either an array
           words.push(<div>{nyms[x]}</div>)
        }
     setNymsState((prevState) => {return {...prevState, display: words}})
-}, [nymsState.display])
+}, [nymsState.display, nymsState.showAmount])
 
 
 
     return <>
         {nymsState.display} {/*displays nyms*/}
         {nymsState.showAmount < nyms.length && <button onClick={() => setNymsState((prevState) => {return {...prevState, showAmount: nymsState.showAmount + 6}})}>Show More</button>} {/*on click it adds 6 to the show amount so it updates state and rerenders showing 6 more items in the display */}
-        <button>Add {`${type}`}</button>
+        {/* <AddNyms type={type} nyms={nyms}/> */}
     </>
 }
