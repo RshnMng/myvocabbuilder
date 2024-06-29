@@ -11,7 +11,6 @@ export default function ThesaurusButtons(props){
         addAnts: false, 
     })
 
-    console.log(synonyms)
 
     return <>
        {buttonState.showSyns && <NymsDisplay nyms={synonyms} type={'Synonym'} />} {/*When state is changed to true, these components are shown displaying the selected words */}

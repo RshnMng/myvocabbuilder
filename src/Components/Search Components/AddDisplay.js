@@ -38,7 +38,7 @@ export default function AddDisplay(props){
         }
       
         display.unshift(addedData);
-        setNymsState((prevState) => { return {...prevState, display: display}})
+        setNymsState((prevState) => { return {...prevState, display: display, displayLength: nymsState.displayLength + 1}})
     }
    
     return <div>
