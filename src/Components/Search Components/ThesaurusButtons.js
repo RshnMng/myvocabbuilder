@@ -5,7 +5,7 @@ import AddNyms from './AddNyms';
 export default function ThesaurusButtons(props){
     let {synonyms, antonyms} = props
     let [buttonState, setButtonState] = useState({
-        showSyns: false,
+        showSyns: false, 
         showAnts: false,
         addSyns: false,
         addAnts: false, 
