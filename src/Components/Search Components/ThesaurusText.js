@@ -4,7 +4,7 @@ import { globalFunctions } from '../../Pages/Utility Pages/GlobalFunctions';
 import ThesaurusButtons from './ThesaurusButtons';
 
 export default function ThesaurusText(props){
-    let {textContent, partOfSpeech} = props; // import props and save in variable
+    let {textContent, partOfSpeech, id } = props; // import props and save in variable
     let exampleTxt;             // declare variable to be used later
     let defTxt = textContent[1].dt[0][1]; // gets definition and save into variable defTxt
 
@@ -25,18 +25,17 @@ export default function ThesaurusText(props){
     })
 
 
+
+
    
 
     return <>
+        <div id={id}>
         <div>{partOfSpeech} </div>
         <div>{textState.definitionText}</div>
         <div>{textState.exampleText}</div>
-        <ThesaurusButtons synonyms={textState.synonyms} antonyms={textState.antonyms} />
+        <ThesaurusButtons synonyms={textState.synonyms} antonyms={textState.antonyms} id={id} wordInfo={textContent}/>
+        </div>
     </>
 }
 
-//Next Steps //
-
-// add button clicked, a pop up comes up with a space to add a word and an example sentence 
-// on save, a pop up will come up explaining that adding a modification will automatically save the word and definition to your study deck, continue?
-// create add to deck functionality for dictionary and thesaurus

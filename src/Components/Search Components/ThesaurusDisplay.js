@@ -7,7 +7,9 @@ export default function ThesaurusDisplay(props){
     return <>
     {thesaurusInfo.map((item) => { // maps through each item and passes info and key to Theasaurus word info
         key++
-        return <ThesaurusWordInfo wordInfo={item} key={key}/>
+        return  <div id={key}>
+         <ThesaurusWordInfo wordInfo={item} key={key}/>
+        </div>
     })}
     </>
 }

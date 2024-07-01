@@ -3,14 +3,12 @@ import { NymContext } from './NymsDisplay'
 
 
 export default function AddDisplay(props){
-    let {nyms, type} = props
+    let {nyms, type, id, wordInfo} = props
     let nymsInfo = useContext(NymContext);
     let nymsState = nymsInfo[0];
     let setNymsState = nymsInfo[1];
     let display = nymsState.display;
     
-
-  
 
     
 
@@ -25,6 +23,7 @@ export default function AddDisplay(props){
     }
 
     function addNym(){
+        console.log(wordInfo)
         let addedData
         if(addDisplayState.exampleSentence === ''){
              addedData = <div>
@@ -41,13 +40,13 @@ export default function AddDisplay(props){
         setNymsState((prevState) => { return {...prevState, display: display, displayLength: nymsState.displayLength + 1}})
     }
    
-    return <div>
+    return <div id={id}>
         <label> Enter {`${type}`} Here
         <input type='text' onChange={(event) => updateInfo(event, 'addedNym')}/>
         </label>
         <label> Provide Example Sentence (Optional)
         <input type='text' onChange={(event) => updateInfo(event, 'exampleSentence')}/>
         </label>
-        <button onClick={() => addNym()}>Add</button>
+        <button id={id}   onClick={() => addNym()}>Add</button>
     </div>
 }

@@ -12,11 +12,15 @@ export default function ThesaurusWordInfo(props){
         searchedWord: wordInfo.meta.id,
         thesDefArray: wordInfo.def[0].sseq,
     })
+
    
     return <>
         {thesState.thesDefArray.map((item) => { // maps through the array and passes item info and key through props to be used in thesauraus definition
             key++ 
-            return <ThesaurusDefinition definitionInfo={item} key={key} partOfSpeech={thesState.partOfSpeech}/>
+            return <div id={key}>
+                            <ThesaurusDefinition definitionInfo={item} key={key} partOfSpeech={thesState.partOfSpeech} id={key}/>
+
+            </div>
         })}
     </>
 }

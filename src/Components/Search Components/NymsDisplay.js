@@ -5,8 +5,8 @@ let NymContext = createContext();
 
 
 export default function NymsDisplay(props){
-    let {nyms, type} = props;
-    
+    let {nyms, type, id, wordInfo} = props;
+    let key = 0;
     let first6 = nyms.slice(0, 6); // grabs the first 6 of the nyms array 
 
    
@@ -34,10 +34,11 @@ function showMoreNyms(){
     return <>
         <NymContext.Provider value={[nymsState, setNymsState]}>
        {nymsState.display.map((word) => { // loops through modified array held in display that only holds the selected amount of nyms and displays them on the page
-        return <div>{word}</div>
+        key++
+        return <div key={key}>{word}</div>
        })} {/*displays nyms*/} 
         {nymsState.showAmount < nyms.length && <button onClick={() => showMoreNyms()}>Show More</button>} {/*on click runs show more nyms function above */} 
-        <AddNyms type={type} nyms={nyms}/>
+        <AddNyms type={type} nyms={nyms } id={id} wordInfo={wordInfo}/>
         </NymContext.Provider>
     </>
 }
@@ -46,6 +47,8 @@ export {NymContext}
 
 // Next Steps //
 // A functionality that when you modify a word it saves it to study deck
+// add comments for add display and addnyms files and any others that need it 
 // Add functionality where you can save a word to study deck for both dictionary and thesauraus 
 // add functionality where you can favortie a word and it goes to favortie deck, alerts user and asks if they want to add and to study deck as well
 // add functionality to add all definitions on a given page to a particular deck
+// double check mirrored functionality for the antonyms, there may be some bugs
